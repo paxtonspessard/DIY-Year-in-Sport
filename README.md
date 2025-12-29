@@ -23,7 +23,7 @@ Build your own Strava year-end review. Strava put their "Year in Sport" behind a
 | Charts | Recharts |
 | Database | SQLite + Drizzle ORM |
 | Auth | NextAuth.js (Strava OAuth) |
-| Claude Integration | Custom MCP Server |
+| Claude Integration | [strava-mcp](https://github.com/r-huijts/strava-mcp) (external) |
 
 ## Quick Start
 
@@ -40,13 +40,13 @@ For detailed setup instructions, see [SETUP.md](./SETUP.md).
 
 ## Using with Claude Code
 
-This project includes an MCP server that lets Claude access your Strava data directly. After initial setup, you can:
+For Claude to access your Strava data directly, install the [strava-mcp](https://github.com/r-huijts/strava-mcp) server. This enables:
 
 1. Ask Claude to analyze your activities
 2. Have Claude help you customize the dashboard
 3. Build new features with Claude's assistance
 
-See [SETUP.md](./SETUP.md#optional-mcp-server-for-claude-code) for MCP setup instructions.
+See [SETUP.md](./SETUP.md#optional-mcp-server-for-claude-code) for setup instructions.
 
 ## Project Structure
 
@@ -58,7 +58,6 @@ year-in-sport/
 │   │   ├── components/ # UI components
 │   │   ├── db/        # Database schema
 │   │   └── lib/       # Utilities
-├── packages/mcp-server/ # Strava MCP server for Claude
 └── .claude/            # Claude Code project guide
 ```
 

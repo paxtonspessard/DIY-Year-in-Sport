@@ -6,29 +6,31 @@ DIY Strava year-end review app. Build your own personalized dashboard with Claud
 
 | Layer | Tech |
 |-------|------|
-| Monorepo | npm workspaces + Turborepo |
 | Web | Next.js 14 + React 18 + TypeScript |
 | Styling | Tailwind CSS |
 | Charts | Recharts |
 | Database | SQLite + Drizzle ORM |
 | Auth | NextAuth.js (Strava OAuth) |
-| Strava API | Custom MCP server |
+| Strava API | [strava-mcp](https://github.com/r-huijts/strava-mcp) (external) |
 
 ## Project Structure
 
 ```
 apps/web/           → Next.js frontend
-packages/mcp-server/ → Strava MCP server for Claude
 .claude/            → Claude Code project guide
 ```
 
 ## Strava MCP Server
 
-Claude has access to Strava via MCP tools:
-- `get_athlete` - Get authenticated user profile
-- `get_activities` - List activities (paginated)
-- `get_year_activities` - Get all activities for a year
-- `get_activity_stats` - Aggregated stats
+For direct Strava access, install [strava-mcp](https://github.com/r-huijts/strava-mcp). It provides 17 tools including:
+
+- `get-athlete-profile` - User profile
+- `get-recent-activities` - Recent activities
+- `get-activity-details` - Detailed activity data with streams
+- `get-athlete-stats` - Aggregated statistics
+- `explore-segments` - Find segments by location
+- `list-athlete-routes` - Saved routes
+- `export-route-gpx` - Export routes to GPX
 
 ## Development
 
@@ -77,14 +79,13 @@ Each user MUST create their own Strava API app - Strava limits one athlete per a
 
 ### 4. MCP Server Setup (Optional)
 
-After first login, set up MCP server for direct Strava access:
+For Claude to access Strava data directly, install [strava-mcp](https://github.com/r-huijts/strava-mcp):
 
-1. Get tokens from database: `cd apps/web && npm run db:studio`
-   - Look in the `users` table for `accessToken`, `refreshToken`, `tokenExpiresAt`
-2. Create MCP config: `cp packages/mcp-server/.env.example packages/mcp-server/.env`
-3. Fill in the tokens from the database
-4. Build the server: `cd packages/mcp-server && npm run build`
-5. Add to Claude: `claude mcp add strava-mcp ./packages/mcp-server/start.sh`
+1. Clone: `git clone https://github.com/r-huijts/strava-mcp.git`
+2. Install: `cd strava-mcp && npm install`
+3. Auth setup: `npm run setup-auth` (opens browser for OAuth)
+4. Build: `npm run build`
+5. Add to Claude: `claude mcp add strava /path/to/strava-mcp/build/index.js`
 
 ---
 

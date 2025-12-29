@@ -101,50 +101,51 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Optional: MCP Server for Claude Code
 
-The MCP server lets Claude access your Strava data directly, enabling Claude to help you analyze activities and build features.
+For Claude to access your Strava data directly, install the [strava-mcp](https://github.com/r-huijts/strava-mcp) server. This is a more feature-complete MCP server with 17 tools for activities, segments, routes, and more.
 
-### Setup MCP Server
+### Setup strava-mcp
 
-1. After logging in via the web app, your OAuth tokens are stored in the database. Extract them:
+1. Clone the strava-mcp repository:
    ```bash
-   cd apps/web
-   npm run db:studio
-   ```
-   Look in the `users` table for `accessToken`, `refreshToken`, and `tokenExpiresAt`.
-
-2. Create the MCP server environment file:
-   ```bash
-   cp packages/mcp-server/.env.example packages/mcp-server/.env
+   git clone https://github.com/r-huijts/strava-mcp.git
+   cd strava-mcp
    ```
 
-3. Edit `packages/mcp-server/.env`:
+2. Install dependencies:
    ```bash
-   STRAVA_CLIENT_ID=your_client_id
-   STRAVA_CLIENT_SECRET=your_client_secret
-   STRAVA_ACCESS_TOKEN=token_from_database
-   STRAVA_REFRESH_TOKEN=refresh_token_from_database
-   STRAVA_EXPIRES_AT=expiry_timestamp_from_database
+   npm install
    ```
 
-4. Build the MCP server:
+3. Run the auth setup (this opens a browser for OAuth):
    ```bash
-   cd packages/mcp-server
+   npm run setup-auth
+   ```
+   Follow the prompts to authorize with Strava. This will save your tokens to `.env`.
+
+4. Build the server:
+   ```bash
    npm run build
    ```
 
 5. Add to Claude Code:
    ```bash
-   claude mcp add strava-mcp /path/to/year-in-sport/packages/mcp-server/start.sh
+   claude mcp add strava /path/to/strava-mcp/build/index.js
    ```
+
+For detailed instructions, see the [strava-mcp README](https://github.com/r-huijts/strava-mcp#readme).
 
 ### Available MCP Tools
 
-Once configured, Claude has access to:
+Once configured, Claude has access to 17 tools including:
 
-- `get_athlete` - Get your Strava profile
-- `get_activities` - List activities (paginated)
-- `get_year_activities` - Get all activities for a specific year
-- `get_activity_stats` - Get aggregated statistics
+- `get-athlete-profile` - Your Strava profile
+- `get-recent-activities` - Recent activities
+- `get-activity-details` - Detailed activity data with streams
+- `get-athlete-stats` - Aggregated statistics
+- `explore-segments` - Find segments by location
+- `list-athlete-routes` - Your saved routes
+- `export-route-gpx` - Export routes to GPX files
+- And more...
 
 ---
 
@@ -175,7 +176,7 @@ npm run db:studio  # Open Drizzle Studio (database GUI)
 
 ### OAuth token expired
 - Log out and log back in via the web app to refresh tokens
-- Or manually update tokens in `packages/mcp-server/.env`
+- For strava-mcp, run `npm run setup-auth` again to refresh tokens
 
 ### Strava API rate limits
 - Strava allows ~200 requests per 15 minutes
@@ -194,7 +195,7 @@ This application is designed for **local development use only**.
 | Strava Client ID/Secret | `apps/web/.env.local` | Plain text |
 | NextAuth Secret | `apps/web/.env.local` | Plain text |
 | OAuth Access/Refresh Tokens | `apps/web/data/year-in-sport.db` | SQLite (unencrypted) |
-| MCP Server Tokens | `packages/mcp-server/.env` | Plain text |
+| MCP Server Tokens (if using strava-mcp) | `strava-mcp/.env` | Plain text |
 
 ### Why this is OK for local use
 
