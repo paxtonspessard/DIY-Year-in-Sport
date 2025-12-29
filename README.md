@@ -62,6 +62,16 @@ year-in-sport/
 └── .claude/            # Claude Code project guide
 ```
 
+## Security Note
+
+This application is designed for **local use only**. Your Strava OAuth tokens are stored in a local SQLite database and `.env` files on your machine.
+
+**Do not deploy this to a public server** without adding proper security measures (authentication, HTTPS, encrypted storage, etc.).
+
+For local use, the risk is minimal - Strava tokens only grant read access to your activity data, and if someone has access to your local files, you have bigger problems.
+
+See [SETUP.md](./SETUP.md#security-considerations) for more details.
+
 ## License
 
 MIT

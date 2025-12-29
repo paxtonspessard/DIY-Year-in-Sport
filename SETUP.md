@@ -180,3 +180,43 @@ npm run db:studio  # Open Drizzle Studio (database GUI)
 ### Strava API rate limits
 - Strava allows ~200 requests per 15 minutes
 - If you hit rate limits, wait 15 minutes before retrying
+
+---
+
+## Security Considerations
+
+This application is designed for **local development use only**.
+
+### Where your credentials are stored
+
+| Data | Location | Format |
+|------|----------|--------|
+| Strava Client ID/Secret | `apps/web/.env.local` | Plain text |
+| NextAuth Secret | `apps/web/.env.local` | Plain text |
+| OAuth Access/Refresh Tokens | `apps/web/data/year-in-sport.db` | SQLite (unencrypted) |
+| MCP Server Tokens | `packages/mcp-server/.env` | Plain text |
+
+### Why this is OK for local use
+
+- If someone has access to your local files, you have bigger security problems
+- Strava tokens only grant **read access** to your activity data
+- Tokens cannot delete data, post on your behalf, or access payment info
+- Access tokens expire and auto-refresh, limiting exposure window
+
+### Do NOT deploy publicly
+
+If you want to host this on a server for others to use, you would need to add:
+
+- User authentication (so users can't see each other's data)
+- HTTPS (to encrypt data in transit)
+- Encrypted database or secure token storage
+- Proper session management
+- Rate limiting and abuse protection
+
+This is beyond the scope of this template, which is intended for personal local use with Claude Code.
+
+### Best practices
+
+- Never commit `.env.local` or `.env` files to git (already in `.gitignore`)
+- Don't share your `apps/web/data/` folder
+- If you think your tokens are compromised, disconnect the app from Strava at https://www.strava.com/settings/apps
