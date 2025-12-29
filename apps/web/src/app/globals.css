@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Background - modern cream */
+  --bg-page: #f5f3ef;
+
+  /* Card backgrounds - dark for contrast */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #252525;
+  --bg-elevated: #2a2a2a;
+
+  /* Strava brand */
+  --strava-orange: #FC4C02;
+  --strava-orange-dark: #E34402;
+  --strava-glow: rgba(252, 76, 2, 0.15);
+
+  /* Text hierarchy */
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+  --text-muted: #525252;
+
+  /* Accents */
+  --accent-success: #22c55e;
+  --accent-gold: #fbbf24;
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--bg-page);
+}
+
+/* Dark card on light background */
+@layer components {
+  .card-elevated {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+  }
+
+  .card-elevated:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  }
+
+  /* Subtle glow effect */
+  .glow-orange {
+    box-shadow: 0 0 40px -10px var(--strava-glow);
+  }
+
+  /* Section header with accent line */
+  .section-header {
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .section-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--strava-orange);
+    border-radius: 2px;
+  }
+}
+
+/* Subtle noise texture overlay */
+@layer utilities {
+  .bg-noise {
+    position: relative;
+  }
+
+  .bg-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+/* Animated gradient border with glow */
+@keyframes rotate-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.btn-gradient-border {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+}
+
+/* Outer glow layer - blurred gradient */
+.btn-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    #ff3d00,
+    #ff9100,
+    #ffc400,
+    #00e676,
+    #00b0ff,
+    #7c4dff,
+    #f50057,
+    #ff3d00
+  );
+  background-size: 300% 100%;
+  animation: rotate-gradient 2.5s linear infinite, pulse-glow 2s ease-in-out infinite;
+  filter: blur(8px);
+  z-index: -2;
+}
+
+/* Button fill */
+.btn-gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+  z-index: -1;
+  transition: all 0.2s ease;
+}
+
+.btn-gradient-border:hover::after {
+  background: linear-gradient(135deg, #ff6e40 0%, #ff5722 100%);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Animated gradient background for intro screen */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
