@@ -78,6 +78,7 @@ npm install
 Create the SQLite database with the required schema:
 
 ```bash
+cd apps/web
 npm run db:push
 ```
 
@@ -99,53 +100,22 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Optional: MCP Server for Claude Code
+## Optional: Mapbox for Route Maps
 
-For Claude to access your Strava data directly, install the [strava-mcp](https://github.com/r-huijts/strava-mcp) server. This is a more feature-complete MCP server with 17 tools for activities, segments, routes, and more.
+For beautiful map backgrounds on highlight slides, add a free Mapbox token.
 
-### Setup strava-mcp
+1. Create a free account at [https://www.mapbox.com/](https://www.mapbox.com/)
 
-1. Clone the strava-mcp repository:
+2. Go to your [Access Tokens page](https://account.mapbox.com/access-tokens/)
+
+3. Copy your **Default public token** (starts with `pk.`)
+
+4. Add to your `apps/web/.env.local`:
    ```bash
-   git clone https://github.com/r-huijts/strava-mcp.git
-   cd strava-mcp
+   NEXT_PUBLIC_MAPBOX_TOKEN=pk.your_token_here
    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Run the auth setup (this opens a browser for OAuth):
-   ```bash
-   npm run setup-auth
-   ```
-   Follow the prompts to authorize with Strava. This will save your tokens to `.env`.
-
-4. Build the server:
-   ```bash
-   npm run build
-   ```
-
-5. Add to Claude Code:
-   ```bash
-   claude mcp add strava /path/to/strava-mcp/build/index.js
-   ```
-
-For detailed instructions, see the [strava-mcp README](https://github.com/r-huijts/strava-mcp#readme).
-
-### Available MCP Tools
-
-Once configured, Claude has access to 17 tools including:
-
-- `get-athlete-profile` - Your Strava profile
-- `get-recent-activities` - Recent activities
-- `get-activity-details` - Detailed activity data with streams
-- `get-athlete-stats` - Aggregated statistics
-- `explore-segments` - Find segments by location
-- `list-athlete-routes` - Your saved routes
-- `export-route-gpx` - Export routes to GPX files
-- And more...
+Without Mapbox, highlight slides will show a gradient background instead of route maps.
 
 ---
 
@@ -176,7 +146,6 @@ npm run db:studio  # Open Drizzle Studio (database GUI)
 
 ### OAuth token expired
 - Log out and log back in via the web app to refresh tokens
-- For strava-mcp, run `npm run setup-auth` again to refresh tokens
 
 ### Strava API rate limits
 - Strava allows ~200 requests per 15 minutes
@@ -195,7 +164,6 @@ This application is designed for **local development use only**.
 | Strava Client ID/Secret | `apps/web/.env.local` | Plain text |
 | NextAuth Secret | `apps/web/.env.local` | Plain text |
 | OAuth Access/Refresh Tokens | `apps/web/data/year-in-sport.db` | SQLite (unencrypted) |
-| MCP Server Tokens (if using strava-mcp) | `strava-mcp/.env` | Plain text |
 
 ### Why this is OK for local use
 
@@ -214,7 +182,7 @@ If you want to host this on a server for others to use, you would need to add:
 - Proper session management
 - Rate limiting and abuse protection
 
-This is beyond the scope of this template, which is intended for personal local use with Claude Code.
+This is beyond the scope of this template, which is intended for personal local use.
 
 ### Best practices
 

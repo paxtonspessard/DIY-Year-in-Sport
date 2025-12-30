@@ -11,7 +11,7 @@ DIY Strava year-end review app. Build your own personalized dashboard with Claud
 | Charts | Recharts |
 | Database | SQLite + Drizzle ORM |
 | Auth | NextAuth.js (Strava OAuth) |
-| Strava API | [strava-mcp](https://github.com/r-huijts/strava-mcp) (external) |
+| Maps | Mapbox Static Images (optional) |
 
 ## Project Structure
 
@@ -19,18 +19,6 @@ DIY Strava year-end review app. Build your own personalized dashboard with Claud
 apps/web/           → Next.js frontend
 .claude/            → Claude Code project guide
 ```
-
-## Strava MCP Server
-
-For direct Strava access, install [strava-mcp](https://github.com/r-huijts/strava-mcp). It provides 17 tools including:
-
-- `get-athlete-profile` - User profile
-- `get-recent-activities` - Recent activities
-- `get-activity-details` - Detailed activity data with streams
-- `get-athlete-stats` - Aggregated statistics
-- `explore-segments` - Find segments by location
-- `list-athlete-routes` - Saved routes
-- `export-route-gpx` - Export routes to GPX
 
 ## Development
 
@@ -54,7 +42,7 @@ If a user is setting up this project for the first time, guide them through thes
 
 ### 1. Create a Strava API Application (REQUIRED)
 
-Each user MUST create their own Strava API app - Strava limits one athlete per application.
+Each user MUST create their own Strava API app.
 
 1. Go to https://www.strava.com/settings/api
 2. Create a new application:
@@ -70,22 +58,20 @@ Each user MUST create their own Strava API app - Strava limits one athlete per a
 3. Generate NextAuth secret: `openssl rand -base64 32`
 4. Add the generated secret as `NEXTAUTH_SECRET`
 
-### 3. Database & Run
+### 3. Mapbox Setup (Optional)
+
+For map backgrounds on highlight slides:
+
+1. Create a free account at https://www.mapbox.com/
+2. Get your public token from https://account.mapbox.com/access-tokens/
+3. Add `NEXT_PUBLIC_MAPBOX_TOKEN=pk.xxx` to `.env.local`
+
+### 4. Database & Run
 
 1. Install dependencies: `npm install`
-2. Initialize database: `npm run db:push`
+2. Initialize database: `cd apps/web && npm run db:push`
 3. Start development server: `npm run dev`
 4. Visit http://localhost:3000 and authorize with Strava
-
-### 4. MCP Server Setup (Optional)
-
-For Claude to access Strava data directly, install [strava-mcp](https://github.com/r-huijts/strava-mcp):
-
-1. Clone: `git clone https://github.com/r-huijts/strava-mcp.git`
-2. Install: `cd strava-mcp && npm install`
-3. Auth setup: `npm run setup-auth` (opens browser for OAuth)
-4. Build: `npm run build`
-5. Add to Claude: `claude mcp add strava /path/to/strava-mcp/build/index.js`
 
 ---
 

@@ -9,21 +9,19 @@ Build your own Strava year-end review. Strava put their "Year in Sport" behind a
 - **Interactive Heatmap** - Calendar view of all your activities
 - **Sport Distribution** - See how your time breaks down by activity type
 - **Monthly Charts** - Track your progress throughout the year
-- **Highlights Slideshow** - Relive your best moments with an animated presentation
+- **Highlights Slideshow** - Relive your best moments with photos and route maps
 - **Activity Filtering** - Filter by sport type (running, cycling, etc.)
-- **Claude MCP Integration** - Let Claude access your Strava data directly
 
 ## Tech Stack
 
 | Layer | Tech |
 |-------|------|
-| Monorepo | npm workspaces + Turborepo |
 | Web | Next.js 14 + React 18 + TypeScript |
 | Styling | Tailwind CSS |
 | Charts | Recharts |
 | Database | SQLite + Drizzle ORM |
 | Auth | NextAuth.js (Strava OAuth) |
-| Claude Integration | [strava-mcp](https://github.com/r-huijts/strava-mcp) (external) |
+| Maps | Mapbox Static Images (optional) |
 
 ## Quick Start
 
@@ -32,21 +30,11 @@ Build your own Strava year-end review. Strava put their "Year in Sport" behind a
 3. Install dependencies: `npm install`
 4. Copy environment template: `cp apps/web/.env.example apps/web/.env.local`
 5. Add your Strava credentials to `.env.local`
-6. Initialize database: `npm run db:push`
+6. Initialize database: `cd apps/web && npm run db:push`
 7. Run: `npm run dev`
 8. Visit http://localhost:3000
 
 For detailed setup instructions, see [SETUP.md](./SETUP.md).
-
-## Using with Claude Code
-
-For Claude to access your Strava data directly, install the [strava-mcp](https://github.com/r-huijts/strava-mcp) server. This enables:
-
-1. Ask Claude to analyze your activities
-2. Have Claude help you customize the dashboard
-3. Build new features with Claude's assistance
-
-See [SETUP.md](./SETUP.md#optional-mcp-server-for-claude-code) for setup instructions.
 
 ## Project Structure
 
